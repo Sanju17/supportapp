@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SupportApp</string>
+    <string name="gcm_defaultSenderId">1080224386102</string>
+</resources>
