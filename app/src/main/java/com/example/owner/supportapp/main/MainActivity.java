@@ -100,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         swipeRefreshLayout.setOnRefreshListener(this);
 
         swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                    getNotificationDatas();
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        getNotificationDatas();
 //                    fetchMovies();
-                }
-            }
+                                    }
+                                }
         );
 
         sharedPreferences = getSharedPreferences(CommonConstants.MY_PREFREENCES, Context.MODE_PRIVATE);
@@ -131,28 +131,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             layoutForFirstRun.setVisibility(View.VISIBLE);
             layoutForOtherRun.setVisibility(View.GONE);
         }
+        exportDB();
     }
 
-    private void setUpListView(){
+    //in fragment
+    private void setUpListView() {
 
         final ListView v = (ListView) findViewById(R.id.notification_list_view);
         final TextView noMessageTextView = (TextView) findViewById(R.id.no_message_text_view);
 
         notificationDatas = getNotificationDatas();
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new MyCursorAdapter(this, notificationDatas);
         }
 
-        if(notificationDatas.size() == 0) {
+        if (notificationDatas.size() == 0) {
             v.setVisibility(View.GONE);
             noMessageTextView.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             v.setVisibility(View.VISIBLE);
             noMessageTextView.setVisibility(View.GONE);
             v.setAdapter(adapter);
         }
     }
 
+    //in fragment
     @NonNull
     private List<NotificationData> getNotificationDatas() {
         DBHelper dbHelper = new DBHelper(this);
@@ -165,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         final Cursor mCursor = dbHelper.getData();
 //        exportDB();
         mCursor.moveToFirst();
-        while(!mCursor.isAfterLast()){
+        while (!mCursor.isAfterLast()) {
             NotificationData notificationData = new NotificationData();
             notificationData.setDate(mCursor.getString(mCursor.getColumnIndex(DBHelper.NOTIFICATION_COLUMN_DATE)));
             notificationData.setMessage(mCursor.getString(mCursor.getColumnIndex(DBHelper.NOTIFICATION_COLUMN_MESSAGE)));
@@ -298,9 +301,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onResume() {
         super.onResume();
         checkPlayServices();
-        if(notificationDatas != null) {
+
+        //in fragment
+        if (notificationDatas != null) {
             notificationDatas = getNotificationDatas();
-            if(notificationDatas.size() != 0) {
+            if (notificationDatas.size() != 0) {
                 adapter.swapItems(notificationDatas);
             }
         }
@@ -340,12 +345,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
         if (!gps_enabled && !network_enabled) {
-            if(!sharedPreferences.contains(CommonConstants.IS_LOCATION_ALERT_SHOW)) {
+            if (!sharedPreferences.contains(CommonConstants.IS_LOCATION_ALERT_SHOW)) {
                 showAlert();
             }
             return;
         }
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         mLastLocation = LocationServices.FusedLocationApi
                 .getLastLocation(mGoogleApiClient);
     }
@@ -425,6 +440,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 + connectionResult.getErrorCode());
     }
 
+    //in fragment
     @Override
     public void onRefresh() {
         // fetchMovie()

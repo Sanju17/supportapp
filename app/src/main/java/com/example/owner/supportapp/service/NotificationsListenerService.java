@@ -25,7 +25,20 @@ public class NotificationsListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
-        String title = data.getString("title");
+        String title = data.getString("contentTitle");
+        String port = data.getString("node");
+        String status = data.getString("status");
+
+        String node = "Node 1";
+
+        if(port.equals("5555")){
+            node = "Node 1";
+        }else if(port.equals("5556")) {
+            node = "Node 2";
+        }else if(port.equals("5557")) {
+            node = "Node 3";
+        }
+
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
@@ -54,6 +67,6 @@ public class NotificationsListenerService extends GcmListenerService {
         String formattedDate = df.format(c.getTime());
 
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        dbHelper.insertContact(message, formattedDate);
+        dbHelper.insertContact(message, formattedDate, node, status);
     }
 }

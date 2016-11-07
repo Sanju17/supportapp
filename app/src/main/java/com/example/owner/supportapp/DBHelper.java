@@ -13,6 +13,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String NOTIFICATION_COLUMN_ID = "_id";
     public static final String NOTIFICATION_COLUMN_DATE = "date";
     public static final String NOTIFICATION_COLUMN_MESSAGE = "message";
+    public static final String NOTIFICATION_COLUMN_NODE = "node";
+    public static final String NOTIFICATION_COLUMN_STATUS = "status";
 
     public DBHelper(Context context){
         super(context,DATABASE_NAME, null, 1);
@@ -24,7 +26,9 @@ public class DBHelper extends SQLiteOpenHelper {
                         "("
                         + NOTIFICATION_COLUMN_ID + " integer primary key autoincrement, "
                         + NOTIFICATION_COLUMN_DATE + " text, "
-                        + NOTIFICATION_COLUMN_MESSAGE +" text " +
+                        + NOTIFICATION_COLUMN_MESSAGE +" text, "
+                        + NOTIFICATION_COLUMN_NODE + " text, "
+                        + NOTIFICATION_COLUMN_STATUS + " text" +
                         ")"
         );
     }
@@ -34,12 +38,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(database);
     }
 
-    public void insertContact(String message, String date)
+    public void insertContact(String message, String date, String node, String status)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(NOTIFICATION_COLUMN_MESSAGE, message);
         contentValues.put(NOTIFICATION_COLUMN_DATE, date);
+        contentValues.put(NOTIFICATION_COLUMN_NODE, node);
+        contentValues.put(NOTIFICATION_COLUMN_STATUS, status);
         db.insert(NOTIFICATION_TABLE_NAME, null, contentValues);
     }
 
