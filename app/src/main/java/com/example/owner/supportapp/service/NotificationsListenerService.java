@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.example.owner.supportapp.DBHelper;
 import com.example.owner.supportapp.R;
+import com.example.owner.supportapp.consts.CommonConstants;
 import com.example.owner.supportapp.main.MainActivity;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -24,10 +25,12 @@ public class NotificationsListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        String title = data.getString("title");
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
 
         Notification n  = new Notification.Builder(this)
-                .setContentTitle("test")
+                .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setAutoCancel(true).build();

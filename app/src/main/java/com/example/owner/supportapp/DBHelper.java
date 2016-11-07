@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "("
                         + NOTIFICATION_COLUMN_ID + " integer primary key autoincrement, "
                         + NOTIFICATION_COLUMN_DATE + " text, "
-                        + NOTIFICATION_COLUMN_MESSAGE +" text" +
+                        + NOTIFICATION_COLUMN_MESSAGE +" text " +
                         ")"
         );
     }

@@ -445,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     class RegisterDevice extends AsyncTask<String, String, String> {
 
-        String url = CommonConstants.BASE_URL + "SupportDevice/RegDeviceByActCode";
+        String url = CommonConstants.BASE_URL + "SupportDevice/RegDeviceByActCodeTest";
         String actCode = "";
         ProgressDialog pb;
 
@@ -502,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     class UpdateDevice extends AsyncTask<String, String, String> {
         String userId = "";
-        String url = CommonConstants.BASE_URL + "SupportDevice/UpdateDeviceDetails";
+        String url = CommonConstants.BASE_URL + "SupportDevice/UpdateDeviceDetailsTest       ";
 
         @Override
         protected void onPreExecute() {
